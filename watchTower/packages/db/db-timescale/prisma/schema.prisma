@@ -13,50 +13,29 @@ datasource db {
   provider = "postgresql"
 }
 
-model User{
-  id String @default(uuid()) @id
-  username String
-  password String
-  email String
-  project Project[]
-}
+//  responseTime:duration,
+//     activeUser:count,
+//     totalUser:totalUser,
+//     route:req.route ? req.route.path :req.path,
+//     status:res.statusCode,
+//     method:req.method,
+//     memory:memoryUsed(),
+//       incomingTraffic,  // bytes sent by client
+//       outgoingTraffic, 
+//     cpuUsage:calculateCpu(cpuAtStart,startTimeCpu),
+//     timeStamps:Date.now()
 model Project{
   id String @default(uuid()) @id
-  name String
-  apiKey String @default(uuid()) @unique
-  userId String
-  user User @relation(fields: [userId],references: [id])
-  dashboard Dashboard[]
-}
- 
-model Dashboard{
-  id String  @default(uuid()) @id
-  projectId String
-  project Project @relation(fields: [projectId],references: [id])
-  dshBoard_widget DashboardWidgets[]
-}
-model DashboardWidgets{
-   id String  @default(uuid()) @id
-   chartType chartType
-   metric  metric
-   dashBoardId String
-   dashBoarsId Dashboard @relation(fields:[dashBoardId],references: [id])
-
-}
-enum metric{
-  cpuUsage
-  memoryUsage
-  network
-  reqperSec
-  totalUser
-  activeUser
-  responseTime
-  errorResponse
-}
-enum chartType{
-  HISTOGRAM
-  BAR_GRAPH
-  Number
-  Pie_Chart
-
+  projectId String @unique 
+  responseTime Float
+  activeUser   Int
+  totalUser Int
+  route String
+  status String
+  method String
+  memory String
+  incomingTraffic Float
+  outgoingTraffic Float
+  cpuUsage Int
+  timeStamps String
 }
