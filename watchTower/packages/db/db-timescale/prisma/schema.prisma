@@ -6,7 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  // output   = "../src/generated/prisma"
+   output   = "../client"
 }
 
 datasource db {
@@ -26,16 +26,16 @@ datasource db {
 //     timeStamps:Date.now()
 model Project{
   id String @default(uuid()) @id
-  projectId String @unique 
+  projectId String @unique
   responseTime Float
   activeUser   Int
   totalUser Int
   route String
   status String
   method String
-  memory String
+  memory  Int
   incomingTraffic Float
   outgoingTraffic Float
   cpuUsage Int
-  timeStamps String
+  timeStamps DateTime
 }
