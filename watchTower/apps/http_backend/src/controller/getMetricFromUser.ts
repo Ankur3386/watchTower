@@ -2,19 +2,24 @@ import { NextFunction, Request, Response } from "express";
 import { getUserMetricSchema } from "../util/type";
 import { timeScaleClient } from "@repo/db-timescale/client";
 export const getUserMetric=async (req:Request,res:Response,next:NextFunction)=>{
+
+    // api key is valid or not 
     const parsedData  = getUserMetricSchema.safeParse(req.body);
     if(!parsedData.success){
         return res.status(400).json("metric send are incoorect");
     }
     
   try {
+    if(!req.projectId){
+       return res.status(400).json("project id not received") 
+    }
       //upsert= update and insert --> so project exist update otherwise create
       const metric= await timeScaleClient.project.upsert({
           where:{
-              projectId:parsedData.data.projectId
+              projectId:req.projectId
           },
           update:{
-          projectId:parsedData.data.projectId,
+          projectId:req.projectId,
          activeUser:parsedData.data.activeUser,
          totalUser:parsedData.data.totalUser,
          route:parsedData.data.route,
@@ -28,7 +33,7 @@ export const getUserMetric=async (req:Request,res:Response,next:NextFunction)=>{
          responseTime:parsedData.data.responseTime
           },
           create:{
-        projectId:parsedData.data.projectId,
+        projectId:req.projectId,
          activeUser:parsedData.data.activeUser,
          totalUser:parsedData.data.totalUser,
          route:parsedData.data.route,

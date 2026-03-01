@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import {timeScaleClient} from "@repo/db-timescale/client"
 import {client} from "@repo/dbcore/client"
-import { addMetricSchema, getUserMetricSchema, getUserDefaultMetricSchema, latestDataSchema, projectSchema } from "../util/type";
+import { addMetricSchema, getUserDefaultMetricSchema, latestDataSchema, projectSchema } from "../util/type";
+import jwt from "jsonwebtoken"
 export const giveUserDefaultData=async(req:Request,res:Response,next:NextFunction)=>{
 const parsedData= getUserDefaultMetricSchema.safeParse(req.query)
 if(!parsedData.success){
@@ -160,17 +161,30 @@ export const createProject = async (req: Request, res: Response) => {
    if (!parsedData.success) {
      return res.status(400).json("invalid  body data");
    }
-
+     if (!req.id) {
+     return res.status(401).json("unauthorized");
+   }
    const project = await client.project.create({
      data: {
        name: parsedData.data.name,
        userId: req.id
      }
    });
+   const apiKey= jwt.sign({
+    id:project.id
+   },process.env.apiSecret as string)
+  const newProjectData= await client.project.update({
+    where:{
+        id:project.id
+    },
+    data:{
+        apiKey
+    }
+  })
 
    return res.status(201).json({
      projectId: project.id,
-     apiKey: project.apiKey
+     apiKey: newProjectData.apiKey
    });
 
  } catch (error) {

@@ -1,6 +1,5 @@
 import * as  z from "zod"
 export const getUserMetricSchema=z.object({
-  projectId:z.string(),
  responseTime: z.number(),
  activeUser:z.number(),
  totalUser:z.number(),
@@ -20,7 +19,7 @@ export const signUpSchema=z.object({
     password:z.string()
 })
 export const  signInSchema=z.object({
-    email:z.string(),
+    email:z.email(),
     password:z.string()
 })
 //enum
@@ -60,3 +59,13 @@ export const latestDataSchema=z.object({
 export const projectSchema=z.object({
   name:z.string()
 })
+
+
+ declare global{
+  namespace Express{
+   export interface Request{
+    id?:string,
+    projectId?:string
+   }
+  }
+}
