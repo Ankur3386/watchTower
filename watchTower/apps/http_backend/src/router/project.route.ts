@@ -3,7 +3,7 @@ import { addMetric, createProject, giveUserDefaultData, latestData } from "../co
 import router from "./index.route";
 import { userMiddleware } from "../middeware/user.middleware";
  export const projectRouter:Router= Router();
- router.use(userMiddleware)
+ projectRouter.use(userMiddleware)
 projectRouter.route('/getUserDefaultData').get(giveUserDefaultData)
 projectRouter.route('/addMetric').post(addMetric)
 projectRouter.route('/latestData').get(latestData)
