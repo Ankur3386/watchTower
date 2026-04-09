@@ -6,7 +6,7 @@ if(!token){
     return res.status(401).json("token not received")
 }
 try {
-    const decondedToken= jwt.verify(token,process.env.jwtSecret as string) as JwtPayload
+    const decondedToken= jwt.verify(token,process.env.JWT_SECRET as string) as JwtPayload
     if(!decondedToken){
          return res.status(400).json("token sent is incorrect")
         }

@@ -124,7 +124,7 @@ try {
     if(!parsedData.success){
         return res.status(400).json("send correct credentials")
     }
-    console.log("hi")
+  
     const project= await client.project.findFirst({
         where:{
             id:parsedData.data.projectId
@@ -139,7 +139,7 @@ try {
             }
         }
     })
-    console.log("hi2")
+   
        if (!project) {
       return res.status(400).json("project not found");
     }
@@ -193,7 +193,7 @@ export const createProject = async (req: Request, res: Response) => {
    });
    const apiKey= jwt.sign({
     id:project.id
-   },process.env.apiSecret as string)
+   },process.env.API_SECRET as string)
   const newProjectData= await client.project.update({
     where:{
         id:project.id

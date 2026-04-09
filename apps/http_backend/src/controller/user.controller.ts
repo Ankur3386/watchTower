@@ -54,7 +54,7 @@ try {
     //generatee token
     const token = jwt.sign({
         id:user.id
-    },process.env.jwtSecret as string,
+    },process.env.JWT_SECRET as string,
     {
         expiresIn:'7d'
     })

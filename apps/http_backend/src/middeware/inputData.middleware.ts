@@ -6,7 +6,7 @@ try {
     if(!apiKey){
          return res.status(400).json("api key not sent") 
     }
-    const decodedApi= jwt.verify(apiKey,process.env.apiSecret as string) as JwtPayload
+    const decodedApi= jwt.verify(apiKey,process.env.API_SECRET as string) as JwtPayload
       if(!decodedApi){
          return res.status(401).json("wrong api Secret") 
       }
