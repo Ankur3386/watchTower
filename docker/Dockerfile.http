@@ -10,8 +10,8 @@ COPY ./packages/*/package.json  ./packages/*/
 COPY ./packages/db/dbcore/package.json ./packages/db/dbcore/package.json
 COPY ./packages/db/db-timescale/package.json ./packages/db/db-timescale/package.json
 COPY ./apps/http_backend/package.json ./apps/http_backend/package.json
-RUN pnpm install
 COPY ./packages ./packages
+RUN pnpm install
 COPY ./apps/http_backend ./apps/http_backend
 RUN cd apps/http_backend && npx tsc -b && cd ../..
 RUN pnpm run dev:dbCore-generate && pnpm run dev:db-timescale-generate
