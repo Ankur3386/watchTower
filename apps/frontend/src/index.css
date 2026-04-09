@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+.recharts-wrapper svg {
+  outline: none;
+}
+
+.recharts-wrapper svg * {
+  pointer-events: none;   /* 👈 disables click/focus on ticks */
+}

@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/client"
+  // output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id       String    @id @default(uuid())
+  username String
+  password String
+  email    String    @unique
+  project  Project[]
+}
+
+model Project {
+  id            String           @id @default(uuid())
+  name          String
+  apiKey        String           @unique @default(uuid())
+  userId        String
+  createdOn     DateTime         @default(now())
+  user          User             @relation(fields: [userId], references: [id])
+  projectWidget ProjectWidgets[]
+}
+
+model ProjectWidgets {
+  id        String    @id @default(uuid())
+  chartType chartType
+  metric    metric
+  projectId String
+  project   Project   @relation(fields: [projectId], references: [id])
+}
+
+enum metric {
+  cpuUsage
+  memoryUsage
+  networkTraffic
+  reqperSec
+  totalUser
+  activeUser
+  responseTime
+  errorResponse
+}
+
+enum chartType {
+  BAR_GRAPH
+  NUMBER
+  PIE_CHART
+  LINE_GRAPH
+}
