@@ -17,8 +17,8 @@ jobs:
      - name: build-and-push
        uses: docker/build-push-action@v5
        with:
-         contex: .
-         files: docker/Dockerfile.http
+         context: .
+         file: docker/Dockerfile.http
          push: true
          tags: ${{secrets.DOCKERHUB_USERNAME}}/http:${{github.sha}}
   deploy:

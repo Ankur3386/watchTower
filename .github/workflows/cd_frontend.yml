@@ -18,7 +18,7 @@ jobs:
        uses: docker/build-push-action@v5
        with:
          context: .
-         files: docker/Dockerfile.fe 
+         file: docker/Dockerfile.fe 
          push: true
          tags: ${{secrets.DOCKERHUB_USERNAME}}/fe:${{github.sha}}  
   deploy-on-Vm:
