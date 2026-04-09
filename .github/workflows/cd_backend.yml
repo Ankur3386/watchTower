@@ -28,7 +28,7 @@ jobs:
     - name: checkout
       uses: actions/checkout@v4
     - name:  deploy-on-aws
-      uses: appleboy/ssh-action@v@v1.0.3
+      uses: appleboy/ssh-action@v1.0.3
       with:
         host: ${{secrets.VM_IP}}
         username: ubuntu
