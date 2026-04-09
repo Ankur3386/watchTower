@@ -7,7 +7,7 @@ COPY ./pnpm-lock.yaml ./pnpm-lock.yaml
 COPY ./turbo.json ./turbo.json
 COPY ./pnpm-workspace.yaml ./pnpm-workspace.yaml
 COPY ./apps/http_backend/package.json ./apps/http_backend/package.json
-COPY ./packages/**/package.json  ./packages/**/package.json
+COPY ./packages/*/package.json  ./packages/*/
 COPY ./packages/db/dbcore/package.json ./packages/db/dbcore/package.json
 COPY ./packages/db/db-timescale/package.json ./packages/db/db-timescale/package.json
 RUN pnpm install
