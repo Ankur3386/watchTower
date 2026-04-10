@@ -38,5 +38,13 @@ jobs:
           docker network create watchTower-network || true
           docker stop http || true
           docker rm http || true
-          docker run --network watchTower-network --name http -p 3000:3000 -e DATABASE_URL_TIMESCALE=${{secrets.DATABASE_URL_TIMESCALE}} -e DATABASE_URL=${{secrets.DATABASE_URL}} -e API_SECRET=${{secrets.API_SECRET}} -e JWT_SECRET=${{secrets.JWT_SECRET}} ${{secrets.DOCKERHUB_USERNAME}}/http:${{github.sha}}
+          docker run \
+           --network watchTower-network \
+           --name http \
+           -p 3000:3000 \
+           -e DATABASE_URL_TIMESCALE=${{secrets.DATABASE_URL_TIMESCALE}} \
+           -e DATABASE_URL=${{secrets.DATABASE_URL}} \
+           -e API_SECRET=${{secrets.API_SECRET}} \
+           -e JWT_SECRET=${{secrets.JWT_SECRET}} \
+           ${{secrets.DOCKERHUB_USERNAME}}/http:${{github.sha}}
           
