@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import bcrypt from "bcrypt"
 import { client } from "@repo/dbcore/client";
 import jwt from "jsonwebtoken"
-import { signInSchema, signUpSchema } from "../util/type";
+import { signInSchema, signUpSchema } from "../router/util/type";
 export const signUpUser=async(req:Request,res:Response,next:NextFunction)=>{
     const parsedData= signUpSchema.safeParse(req.body)
     if(!parsedData.success){

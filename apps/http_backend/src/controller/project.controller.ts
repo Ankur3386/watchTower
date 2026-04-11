@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import {timeScaleClient} from "@repo/db-timescale/client"
 import {client} from "@repo/dbcore/client"
-import { addMetricSchema, getUserDefaultMetricSchema, latestDataSchema, projectSchema } from "../util/type";
+import { addMetricSchema, getUserDefaultMetricSchema, latestDataSchema, projectSchema } from "../router/util/type";
 import jwt from "jsonwebtoken"
 export const giveUserDefaultData=async(req:Request,res:Response,next:NextFunction)=>{
 const parsedData= getUserDefaultMetricSchema.safeParse(req.query)

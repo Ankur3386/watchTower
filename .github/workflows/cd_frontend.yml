@@ -38,7 +38,7 @@ jobs:
            docker network create watchTower-network || true
            docker stop fe || true
            docker rm fe || true
-           docker run --network watchTower-network --name fe -p 5173:5173 ${{secrets.DOCKERHUB_USERNAME}}/fe:${{github.sha}}
+           docker run --network watchTower-network --name fe -e VITE_BACKEND_URL=${{secrets.VITE_BACKEND_URL}} -p 5173:5173 ${{secrets.DOCKERHUB_USERNAME}}/fe:${{github.sha}}
 
          
 

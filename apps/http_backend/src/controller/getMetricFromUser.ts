@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { getUserMetricSchema } from "../util/type";
+import { getUserMetricSchema } from "../router/util/type";
 import { timeScaleClient } from "@repo/db-timescale/client";
 import { memoryUsage } from "process";
 export const getUserMetric=async (req:Request,res:Response,next:NextFunction)=>{
