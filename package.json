@@ -7,10 +7,12 @@
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types",
+    "dev:dbCore-migrate":"cd packages/db/dbcore && npx prisma migrate deploy && cd ../..",
+    "dev:dbTimescale-migrate":"cd packages/db/db-timescale && npx prisma migrate deploy && cd ../..",
     "dev:dbCore-generate":" cd packages/db/dbcore && npx prisma generate && cd ../../..",
     "dev:db-timescale-generate":"cd packages/db/db-timescale && npx prisma generate && cd ../../..",
-    "start:http":"cd apps/http_backend && node dist/index.js",
-    "start:frontend":"cd apps/frontend && npm run dev"
+    "start:http":" pnpm run dev:dbCore-migrate && pnpm run dev:dbTimescale-migrate && cd apps/http_backend && node dist/index.js",
+    "start:frontend": "cd apps/frontend && pnpm run dev -- --host"
   },
   "devDependencies": {
     "prettier": "^3.7.4",

@@ -6,7 +6,7 @@ const RightComponent = () => {
       const navigate=useNavigate()
   return (
    <div className="w-[35%] bg-[#212529] flex flex-col items-center gap-4  ">
-     <div className="  w-[90%]   rounded-2xl h-13 bg-black flex items-center gap-3 "
+     <div className="  w-[90%]   rounded-2xl h-16 bg-black flex items-center gap-3 "
       style={{marginTop:'10px'}}>
         <span className="text-gray-500 text-4xl h-[70%] cursor-pointer"
         style={{marginLeft:'8px'}} onClick={()=>{
@@ -17,7 +17,7 @@ const RightComponent = () => {
         onClick={()=>{
             navigate('/sign-in')
         }}>Sign In</button>
-        <button className="w-[50%] h-[70%] bg-green-500 rounded-3xl text-white text-xs md:text-xs lg:text-md font-bold cursor-pointer"
+        <button className="w-[50%] h-[70%] bg-green-500 rounded-3xl text-white text-xs md:text-xs lg:text-lg font-bold cursor-pointer"
          style={{marginLeft:'6px'}}
          onClick={()=>{
             navigate('/sign-up')
