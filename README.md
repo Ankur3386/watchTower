@@ -1,135 +1,161 @@
-# Turborepo starter
+# WatchTower 🚀
 
-This Turborepo starter is maintained by the Turborepo core team.
+[![Docker](https://img.shields.io/badge/Docker-Compose-green)](https://docs.docker.com/compose/)
+[![React](https://img.shields.io/badge/React-19-blue)](https://react.dev/)
+[![Node.js](https://img.shields.io/badge/Node-22-green)](https://nodejs.org/)
+[![TimescaleDB](https://img.shields.io/badge/TimescaleDB-2.15-orange)](https://www.timescale.com/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org/)
 
-## Using this example
+## What is WatchTower?
 
-Run the following command:
+**WatchTower** is a production-ready, real-time application metrics monitoring platform built for developers. Track your app's performance with zero-config SDK integration, interactive dashboards, and time-series optimized storage.
 
-```sh
-npx create-turbo@latest
+### 🚀 Key Differentiators & Skills Demonstrated
+- **Time-Series Optimized**: Powered by TimescaleDB hypertables for efficient querying of high-cardinality metrics (e.g., AVG CPU/memory over time buckets).
+- **Zero-Config SDK**: `@ankur3386/metrics-sdk` auto-captures HTTP metrics (active/total users, routes/status codes, CPU/memory usage, traffic I/O, response times).
+- **Customizable Dashboards**: Drag-and-drop widgets with Recharts (line/bar/pie graphs), real-time updates, alerts.
+- **Monorepo Excellence**: Turborepo + pnpm for scalable frontend/backend/DB packages.
+- **Production-Ready**: Docker Compose multi-service (Postgres + TimescaleDB + Express API + React FE), Prisma ORM, JWT auth, Zod validation.
+- **Key Metrics Tracked**:
+  | Metric          | Description                  |
+  |-----------------|------------------------------|
+  | `activeUser`    | Concurrent active users     |
+  | `totalUser`     | Total unique users           |
+  | `route`         | Request path                 |
+  | `status`        | HTTP status code             |
+  | `memoryUsage`   | Node.js memory (MB)          |
+  | `cpuUsage`      | CPU utilization (%)          |
+  | `incomingTraffic` | Incoming bytes             |
+  | `outgoingTraffic` | Outgoing bytes             |
+  | `responseTime`  | Request duration (ms)        |
+  | `timeStamps`    | Timestamp (time-series)      |
+
+## ⚡ Quick Start (Self-Host)
+
+1. **Clone & Install**
+   ```bash
+   git clone <repo>
+   cd watchTower
+   pnpm install
+   ```
+
+2. **Environment Setup** (`.env` in `apps/http_backend/src/`)
+   ```
+   POSTGRES_PASSWORD=your_pg_pass
+   JWT_SECRET=your_jwt_secret
+   API_SECRET=your_api_secret
+   ```
+
+3. **Migrate & Generate Prisma Clients**
+   ```bash
+   pnpm run dev:dbCore-migrate
+   pnpm run dev:dbTimescale-migrate
+   pnpm run dev:dbCore-generate
+   pnpm run dev:db-timescale-generate
+   ```
+
+4. **Run with Docker (Recommended)**
+   ```bash
+   docker compose up -d
+   ```
+   - Backend API: http://localhost:3000
+   - Frontend: http://localhost:5173
+
+5. **Or Local Dev**
+   ```bash
+   pnpm dev  # FE:5173 + BE:3000
+   ```
+
+## 🔌 Integrate into YOUR App (3 Steps)
+
+To monitor **your** project with WatchTower:
+
+1. **Install SDK**
+   ```bash
+   npm i @ankur3386/metrics-sdk
+   ```
+
+2. **Sign Up → Create Project → Copy API Key**  
+   Visit http://localhost:5173 → Dashboard → New Project → Copy API Key.
+
+3. **Add to Your App's Entry File** (e.g., `index.js` / `app.js`)
+   ```javascript
+   import { initMetrics, userMetrics } from "@ankur3386/metrics-sdk";
+   // or const { initMetrics, userMetrics } = require('@ankur3386/metrics-sdk');
+
+   const app = express();
+   app.use(userMetrics);  // Auto-tracks every request
+
+   initMetrics({
+     apiKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImFhZDQ5YjA5LWViZTEtNGNjOS05ODc0LTg2YjFlZjg5NWM5MCIsImlhdCI6MTc3NTcxMTExNH0.XrF7QTn6ig_nTvP_xXR8EUxIrzL2yBD8UvskxU_z0_o",
+     url: 'http://localhost:3000/api/v1/client/metric-data'
+   });
+   ```
+
+**That's it!** Metrics flow automatically. View dashboards at your WatchTower instance.
+
+## 📊 WatchTower APIs
+
+All under `/api/v1` (localhost:3000):
+
+| Endpoint                  | Method | Auth     | Description                  |
+|---------------------------|--------|----------|------------------------------|
+| `/client/metric-data`     | POST   | API Key  | Ingest app metrics (main)   |
+| `/sign-up`                | POST   | None     | Create user account         |
+| `/sign-in`                | POST   | None     | Login (JWT)                 |
+| `/api-key`                | GET    | JWT      | List project API keys       |
+| `/project/addMetric`      | POST   | JWT      | Add project metric          |
+| `/project/latestData`     | GET    | JWT      | Latest dashboard data       |
+| `/project/getUserDefaultData` | GET | JWT   | Default project metrics     |
+| `/dashboard`              | GET    | JWT      | User dashboard summary      |
+
+**Metric Payload Schema** (Zod-validated):
+```ts
+{
+  projectId: string,
+  activeUser: number,
+  totalUser: number,
+  route: string,
+  status: string,
+  memoryUsage: number,
+  incomingTraffic: number,
+  outgoingTraffic: number,
+  cpuUsage: number,
+  timeStamps: Date,
+  responseTime: number
+}
 ```
 
-## What's inside?
-
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
+## 🏗️ Architecture
 
 ```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
+┌─────────────────┐    ┌──────────────────┐
+│   Your App      │───▶│   SDK Middleware │
+│   + SDK         │    │   (userMetrics)  │
+└─────────────────┘    └──────────────────┘
+                               │
+                               ▼
+┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
+│  WatchTower FE  │◀───│  Express API     │───▶│TimescaleDB (TS) │
+│(React/Charts)   │    │  (/api/v1)       │    │(Metrics)        │
+└─────────────────┘    └──────────────────┘    └─────────────────┘
+                               │
+                               ▼
+                          Postgres (Users/Projects)
 ```
 
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+## 🚀 Build & Deploy
 
-```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
+- **Build**: `pnpm build`
+- **Start Prod**: `pnpm run start:http` (backend)
+- **Docker Build**: As in Dockerfile.http/Dockerfile.fe
+- **CI/CD**: GitHub Actions (cd_backend.yml, cd_frontend.yml)
 
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
+## Contributing
 
-### Develop
+1. Fork & PR.
+2. Follow TS/ESLint/Prettier.
+3. Update schemas → `pnpm run dev:*-migrate && dev:*generate`.
 
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
-```
-
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
-
-```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
-
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+## License
+MIT
